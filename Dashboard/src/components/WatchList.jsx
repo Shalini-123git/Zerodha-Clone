@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import axios from "axios";
 
@@ -19,12 +19,22 @@ import { DoughnutChart } from "./DoughnoutChart";
 const labels = watchlist.map((subArray) => subArray["name"]);
 
 const WatchList = () => {
+
+  const [allWatchlist, setAllWatchlist] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/allwatchlist").then((res) => {
+      console.log(res.data);
+      setAllWatchlist(res.data);
+    })
+  }, []);
+
   const data = {
     labels,
     datasets: [
       {
         label: "Price",
-        data: watchlist.map((stock) => stock.price),
+        data: allWatchlist.map((stock) => stock.price),
         backgroundColor: [
           "rgba(255, 99, 132, 0.5)",
           "rgba(54, 162, 235, 0.5)",
@@ -74,7 +84,7 @@ const WatchList = () => {
   // };
 
   return (
-    <div className="watchlist-container">
+    <div className="watchlistcontainer">
       <div className="search-container">
         <input
           type="text"
@@ -83,11 +93,11 @@ const WatchList = () => {
           placeholder="Search eg:infy, bse, nifty fut weekly, gold mcx"
           className="search"
         />
-        <span className="counts"> {watchlist.length} / 50</span>
+        <span className="counts"> {allWatchlist.length} / 50</span>
       </div>
 
       <ul className="list">
-        {watchlist.map((stock, index) => {
+        {allWatchlist.map((stock, index) => {
           return <WatchListItem stock={stock} key={index} />;
         })}
       </ul>

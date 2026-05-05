@@ -5,9 +5,19 @@ import { VerticalGraph } from "./VerticalGraph";
 import { holdings } from "../data/data";
 
 const Holdings = () => {
+
+  const [allHoldings, setAllHoldings] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/allHoldings").then((res) => {
+      console.log(res.data);
+      setAllHoldings(res.data);
+    })
+  })
+
   return (
     <>
-      <h3 className="title">Holdings ({holdings.length})</h3>
+      <h3 className="title">Holdings ({allHoldings.length})</h3>
       <div className="order-table">
           <table>
             <thead>
@@ -24,7 +34,7 @@ const Holdings = () => {
             </thead>
 
            <tbody>
-            {holdings.map((stock, index) => {
+            {allHoldings.map((stock, index) => {
             const curValue = stock.price * stock.qty;
             const isProfit = curValue - stock.avg * stock.qty >= 0.0;
             const profClass = isProfit ? "profit" : "loss";
