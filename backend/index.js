@@ -8,6 +8,7 @@ import Holding from "./schema/holdingsSchema.js";
 import Watchlist from "./schema/watchList.js";
 import Position from './schema/positionSchema.js';
 import bodyParser from "body-parser";
+import Order from "./schema/orderSchmea.js";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -51,5 +52,18 @@ app.get("/allwatchlist", async (req, res) => {
     const allwatchlist = await Watchlist.find({});
 
     res.status(200).json(allwatchlist);
+})
+
+
+app.post("/newOrder", async (req, res) => {
+    const newOrder = new Order({
+        name: req.body.name,
+        qty: req.body.qty,
+        price: req.body.price,
+        mode: req.body.mode
+    });
+
+    await newOrder.save();
+    res.send("order send!");
 })
 
