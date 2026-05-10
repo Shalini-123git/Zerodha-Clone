@@ -4,11 +4,11 @@ import path from 'path';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 dotenv.config();
-import Holding from "./schema/holdingsSchema.js";
-import Watchlist from "./schema/watchList.js";
-import Position from './schema/positionSchema.js';
+import Holding from "./models/holdingsModel.js";
+import Watchlist from "./models/watchListModel.js";
+import Position from './models/positionModel.js';
 import bodyParser from "body-parser";
-import Order from "./schema/orderSchmea.js";
+import Order from "./models/orderModel.js";
 import User from './routes/authRoute.js';
 import cookieParser from "cookie-parser";
 
