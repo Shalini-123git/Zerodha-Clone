@@ -669,6 +669,8 @@ hr {
 
 .list {
   list-style-type: none;
+  margin: 0;
+  padding-left: 0;
   padding-bottom: 12%;
 }
 

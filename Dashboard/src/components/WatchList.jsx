@@ -24,7 +24,6 @@ const WatchList = () => {
 
   useEffect(() => {
     axios.get("http://localhost:3000/allwatchlist").then((res) => {
-      console.log(res.data);
       setAllWatchlist(res.data);
     })
   }, []);
@@ -84,7 +83,7 @@ const WatchList = () => {
   // };
 
   return (
-    <div className="watchlistcontainer">
+    <div className="watchlist-container">
       <div className="search-container">
         <input
           type="text"
@@ -124,7 +123,7 @@ const WatchListItem = ({ stock }) => {
     <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="item">
         <p className={stock.isDown ? "down" : "up"}>{stock.name}</p>
-        <div className="itemInfo">
+        <div className="item-info">
           <span className="percent">{stock.percent}</span>
           {stock.isDown ? (
             <KeyboardArrowDown className="down" />
@@ -134,16 +133,21 @@ const WatchListItem = ({ stock }) => {
           <span className="price">{stock.price}</span>
         </div>
       </div>
-      {showWatchlistActions && <WatchListActions uid={stock.name} />}
+      {showWatchlistActions && <WatchListActions uid={stock.name} id={stock._id} />}
     </li>
   );
 };
 
-const WatchListActions = ({ uid }) => {
+const WatchListActions = ({ uid, id }) => {
   const generalContext = useContext(GeneralContext);
 
   const handleBuyClick = () => {
     generalContext.openBuyWindow(uid);
+  };
+
+  const handleSellClick = () => {
+    generalContext.openSellWindow(uid, id);
+    console.log("sell stock", uid, id);
   };
 
   return (
@@ -163,6 +167,7 @@ const WatchListActions = ({ uid }) => {
           placement="top"
           arrow
           TransitionComponent={Grow}
+          onClick={handleSellClick}
         >
           <button className="sell">Sell</button>
         </Tooltip>
