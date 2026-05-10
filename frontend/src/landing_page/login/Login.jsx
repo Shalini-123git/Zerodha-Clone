@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function SignUp() {
+function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
   });
@@ -26,7 +25,7 @@ function SignUp() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/auth/signup", {
+      const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,12 +37,12 @@ function SignUp() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        setMessage(data.message || "Signup failed");
+        setMessage(data.message || "Login failed");
         return;
       }
 
-      setMessage(data.message || "Signup successful");
-      navigate("/login");
+      setMessage(data.message || "Login successful");
+      navigate("/");
     } catch (error) {
       setMessage("Unable to connect to server");
     } finally {
@@ -55,25 +54,9 @@ function SignUp() {
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-md-6 col-lg-5">
-          <h2 className="mb-4 text-center">Create Account</h2>
+          <h2 className="mb-4 text-center">Login</h2>
 
           <form className="border rounded p-4 shadow-sm" onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label" htmlFor="username">
-                Username
-              </label>
-              <input
-                className="form-control"
-                id="username"
-                name="username"
-                onChange={handleChange}
-                placeholder="Enter username"
-                required
-                type="text"
-                value={formData.username}
-              />
-            </div>
-
             <div className="mb-3">
               <label className="form-label" htmlFor="email">
                 Email
@@ -97,7 +80,6 @@ function SignUp() {
               <input
                 className="form-control"
                 id="password"
-                minLength="6"
                 name="password"
                 onChange={handleChange}
                 placeholder="Enter password"
@@ -110,12 +92,12 @@ function SignUp() {
             {message && <p className="text-danger mb-3">{message}</p>}
 
             <button className="btn btn-primary w-100" disabled={isLoading} type="submit">
-              {isLoading ? "Creating account..." : "Sign Up"}
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
 
           <p className="mt-3 text-center">
-            Already have an account? <Link to="/login">Login</Link>
+            New user? <Link to="/signup">Create an account</Link>
           </p>
         </div>
       </div>
@@ -123,4 +105,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Login;
