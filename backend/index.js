@@ -10,6 +10,7 @@ import Position from './schema/positionSchema.js';
 import bodyParser from "body-parser";
 import Order from "./schema/orderSchmea.js";
 
+
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -54,8 +55,15 @@ app.get("/allwatchlist", async (req, res) => {
     res.status(200).json(allwatchlist);
 })
 
+app.get("/allOrders", async (req, res) => {
+    const allOrders = await Order.find({});
+
+    res.status(200).json(allOrders);
+})
+
 
 app.post("/newOrder", async (req, res) => {
+    console.log(req.body.name);
     const newOrder = new Order({
         name: req.body.name,
         qty: req.body.qty,
@@ -67,3 +75,30 @@ app.post("/newOrder", async (req, res) => {
     res.send("order send!");
 })
 
+app.delete("/order/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, qty, price, mode } = req.body;
+
+        await Watchlist.findByIdAndDelete(id);
+
+        const sellOrder = new Order({
+            name,
+            qty,
+            price,
+            mode
+        });
+
+        await sellOrder.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Stock sold successfully"
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+})
