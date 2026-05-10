@@ -9,7 +9,8 @@ import Watchlist from "./schema/watchList.js";
 import Position from './schema/positionSchema.js';
 import bodyParser from "body-parser";
 import Order from "./schema/orderSchmea.js";
-
+import User from './routes/authRoute.js';
+import cookieParser from "cookie-parser";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -26,8 +27,13 @@ const dbConnection = async () => {
 //db connection
 dbConnection();
 
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
+app.use(express.json());
+app.use(cookieParser());
+app.use("/auth", User);
 
 app.listen(port, () => {
     console.log(`server is listening on http://localhost:${port}`);
