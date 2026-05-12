@@ -23,7 +23,7 @@ const WatchList = () => {
   const [allWatchlist, setAllWatchlist] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/allwatchlist").then((res) => {
+    axios.get(`${import.meta.env.VITE_API_URL}/allWatchlist`).then((res) => {
       setAllWatchlist(res.data);
     })
   }, []);

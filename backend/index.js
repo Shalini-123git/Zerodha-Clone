@@ -28,7 +28,10 @@ const dbConnection = async () => {
 dbConnection();
 
 app.use(cors({
-    origin: true,
+    origin: [
+        process.env.FRONTEND_URL,
+        process.env.DASHBOARD_URL
+    ],
     credentials: true
 }));
 app.use(express.json());

@@ -6,7 +6,7 @@ const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/allOrders").then((res) => {
+    axios.get(`${import.meta.env.VITE_API_URL}/allOrders`).then((res) => {
       setAllOrders(res.data);
     });
   }, []);

@@ -12,7 +12,7 @@ const SellActionWindow = ({ uid, id }) => {
   const handleSellClick = async (e) => {
     e.preventDefault();
 
-    await axios.delete(`http://localhost:3000/order/${id}`, {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/order/${id}`, {
       data: {
         name: uid,
         qty: Number(stockQuantity),
