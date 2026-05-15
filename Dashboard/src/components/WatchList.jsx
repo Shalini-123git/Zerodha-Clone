@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import axios from "axios";
 
@@ -13,23 +13,19 @@ import {
   MoreHoriz,
 } from "@mui/icons-material";
 
-import { watchlist } from "../data/data";
 import { DoughnutChart } from "./DoughnoutChart";
 
-const labels = watchlist.map((subArray) => subArray["name"]);
-
 const WatchList = () => {
-
   const [allWatchlist, setAllWatchlist] = useState([]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/allWatchlist`).then((res) => {
+    axios.get(`${import.meta.env.VITE_API_URL}/allwatchlist`).then((res) => {
       setAllWatchlist(res.data);
-    })
+    });
   }, []);
 
   const data = {
-    labels,
+    labels: allWatchlist.map((stock) => stock.name),
     datasets: [
       {
         label: "Price",
@@ -96,8 +92,8 @@ const WatchList = () => {
       </div>
 
       <ul className="list">
-        {allWatchlist.map((stock, index) => {
-          return <WatchListItem stock={stock} key={index} />;
+        {allWatchlist.map((stock) => {
+          return <WatchListItem stock={stock} key={stock._id || stock.name} />;
         })}
       </ul>
 
@@ -111,11 +107,11 @@ const WatchList = () => {
 const WatchListItem = ({ stock }) => {
   const [showWatchlistActions, setShowWatchlistActions] = useState(false);
 
-  const handleMouseEnter = (e) => {
+  const handleMouseEnter = () => {
     setShowWatchlistActions(true);
   };
 
-  const handleMouseLeave = (e) => {
+  const handleMouseLeave = () => {
     setShowWatchlistActions(false);
   };
 
@@ -128,7 +124,7 @@ const WatchListItem = ({ stock }) => {
           {stock.isDown ? (
             <KeyboardArrowDown className="down" />
           ) : (
-            <KeyboardArrowUp className="down" />
+            <KeyboardArrowUp className="up" />
           )}
           <span className="price">{stock.price}</span>
         </div>
