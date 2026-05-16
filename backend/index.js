@@ -29,6 +29,8 @@ dbConnection();
 
 app.use(cors({
     origin: [
+        "http://localhost:8080",
+        "http://localhost:8000",
         process.env.FRONTEND_URL,
         process.env.DASHBOARD_URL
     ],
