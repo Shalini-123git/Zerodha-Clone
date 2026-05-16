@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 8000
+  },
+  preview: {
+    allowedHosts: ['healthcheck.railway.app']
   }
 })
