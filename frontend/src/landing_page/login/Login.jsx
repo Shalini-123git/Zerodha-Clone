@@ -1,14 +1,47 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Login() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
+          withCredentials: true, 
+        });
+
+        const data = res.data;
+        console.log(data);
+
+        if(!data.success){
+          setMessage(data.message || "Login failed");
+          return;
+        }
+
+        setMessage(data.message || "Login successfull");
+
+        window.location.href = import.meta.env.VITE_DASHBOARD_URL;
+
+      } catch (error) {
+        setMessage(
+          error.response?.data?.message || "Unable to connect to server"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +75,7 @@ function Login() {
       }
 
       setMessage(data.message || "Login successful");
-      navigate("/");
+      window.location.href = import.meta.env.VITE_DASHBOARD_URL;
     } catch (error) {
       setMessage("Unable to connect to server");
     } finally {
