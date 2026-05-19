@@ -1,13 +1,32 @@
 import React, { useState } from "react";
-
+import axios from 'axios';
 import { Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({user}) => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
+  };
+
+  const handleLogout = async () => {
+    console.log("Logout clicked");
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {}, {
+        withCredentials: true,
+      })
+
+      console.log(res.data);
+
+      if(res.data.success){
+        window.location.replace(
+        `${import.meta.env.VITE_FRONTEND_URL}/login`
+      );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleProfileClick = (index) => {
@@ -91,9 +110,16 @@ const Menu = () => {
         </ul>
         <hr />
         <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
+          <div className="avatar">{user?.username?.charAt(0).toUpperCase()}</div>
+          <p className="username">{user.username}</p>
         </div>
+
+        {isProfileDropdownOpen && (
+            <div className="profile-dropdown">
+              <button onClick={handleLogout}>Logout</button>
+            </div>
+          )}
+
       </div>
     </div>
   );
