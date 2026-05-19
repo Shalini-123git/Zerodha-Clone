@@ -12,7 +12,20 @@ const Holdings = () => {
     axios.get(`${import.meta.env.VITE_API_URL}/allHoldings`).then((res) => {
       setAllHoldings(res.data);
     })
-  })
+  }, []);
+
+  const labels = allHoldings.map((subArray) => subArray["name"]);
+  
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Stock Price",
+        data: allHoldings.map((stock) => stock.price),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
 
   return (
     <>
@@ -57,7 +70,7 @@ const Holdings = () => {
           </tbody>
         </table>
       </div>
-      
+      <VerticalGraph data={data} />
     </>
   )
 }
