@@ -1,10 +1,13 @@
 import React from "react";
+import { useOutletContext } from "react-router-dom";
 
 const Summary = () => {
+
+  const { user } = useOutletContext();
   return (
     <>
       <div className="username">
-        <h6>Hi, User!</h6>
+        <h6>Hi, {user.username}!</h6>
         <hr className="divider" />
       </div>
 
